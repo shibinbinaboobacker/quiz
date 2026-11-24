@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizCraft &mdash; 100 Question Quiz | 40 Question Tests</title>
+  <meta name="description" content="QuizCraft is a browser-based quiz app with a bank of 100 multiple-choice questions. Each test gives you 40 questions, 4 options and one correct answer, with instant scoring and a full answer review.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href=" css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ================= Header ================= -->
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#" data-home>
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18h6"></path>
+            <path d="M10 21h4"></path>
+            <path d="M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z"></path>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <strong>QuizCraft</strong>
+          <small>100-question bank &middot; 40-question test</small>
+        </span>
+      </a>
+
+      <nav class="header-nav" aria-label="Main">
+        <button type="button" class="ghost-btn" data-home>Home</button>
+        <button type="button" class="ghost-btn" id="nav-browse-all">Question bank</button>
+        <button type="button" class="solid-btn compact" id="nav-start">Start test</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= Home screen ================= -->
+    <section class="screen is-active" id="screen-home" aria-labelledby="home-title">
+      <div class="hero">
+        <div class="shell hero-grid">
+          <div class="hero-copy">
+            <span class="pill"><span class="dot" aria-hidden="true"></span> Knowledge assessment</span>
+            <h1 id="home-title">Test your knowledge with <span class="grad-text">100 questions</span>.</h1>
+            <p class="lede">
+              Every test serves <strong>40 questions</strong> drawn at random from a bank of
+              <strong>100</strong>. Each question has <strong>4 options</strong> and exactly
+              <strong>one correct answer</strong>. You get 30 minutes, instant scoring and a full
+              answer review.
+            </p>
+
+            <div class="hero-actions">
+              <button type="button" class="solid-btn large" id="start-test-btn">
+                Start the 40-question test
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path>
+                </svg>
+              </button>
+              <button type="button" class="outline-btn large" id="browse-all-btn">Browse all 100 questions</button>
+            </div>
+
+            <dl class="hero-stats">
+              <div class="stat">
+                <dt>Question bank</dt>
+                <dd>100</dd>
+              </div>
+              <div class="stat">
+                <dt>Per test</dt>
+                <dd>40</dd>
+              </div>
+              <div class="stat">
+                <dt>Options each</dt>
+                <dd>4</dd>
+              </div>
+              <div class="stat">
+                <dt>Time limit</dt>
+                <dd>30<span>min</span></dd>
+              </div>
+            </dl>
+          </div>
+
+          <aside class="hero-panel" aria-label="How it works">
+            <h2>How it works</h2>
+            <ol class="steps">
+              <li>
+                <span class="step-num">1</span>
+                <div>
+                  <strong>Answer at your pace</strong>
+                  <p>Move freely between the 40 questions using the navigator.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">2</span>
+                <div>
+                  <strong>One answer per question</strong>
+                  <p>Pick the single best option, or change it any time before submitting.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <div>
+                  <strong>Submit &amp; review</strong>
+                  <p>Get your score, category breakdown and every correct answer explained.</p>
+                </div>
+              </li>
+            </ol>
+            <div class="best-score" id="best-score-box" hidden>
+              <span class="best-label">Personal best</span>
+              <span class="best-value"><span id="best-score-value">0</span> / 40</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="shell categories" aria-labelledby="cat-title">
+        <div class="section-head">
+          <h2 id="cat-title">What is covered</h2>
+          <p>The 100 questions are split across five categories.</p>
+        </div>
+        <div class="cat-grid" id="cat-grid"><!-- injected by JS --></div>
+      </div>
+    </section>
+
+    <!-- ================= Quiz screen ================= -->
+    <section class="screen" id="screen-quiz" aria-labelledby="quiz-title">
+      <div class="shell quiz-layout">
+        <div class="quiz-main">
+          <div class="quiz-topbar">
+            <div class="topbar-info">
+              <h2 id="quiz-title">Question <span id="q-current">1</span> <span class="of">of</span> <span id="q-total">40</span></h2>
+              <span class="cat-badge" id="q-category">Science</span>
+            </div>
+            <div class="timer" id="timer" role="timer" aria-live="off">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2.5 2"></path><path d="M9 2h6"></path>
+              </svg>
+              <span id="timer-text">30:00</span>
+            </div>
+          </div>
+
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+          </div>
+
+          <article class="question-card">
+            <p class="question-count" id="question-count">Answered <span id="answered-count">0</span> of 40</p>
+            <h3 class="question-text" id="question-text">Loading question&hellip;</h3>
+
+            <div class="options" id="options" role="radiogroup" aria-labelledby="question-text"><!-- injected --></div>
+
+            <div class="question-actions">
+              <button type="button" class="outline-btn" id="prev-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M19 12H5"></path><path d="M11 18l-6-6 6-6"></path>
+                </svg>
+                Previous
+              </button>
+              <button type="button" class="outline-btn subtle" id="clear-btn">Clear answer</button>
+              <button type="button" class="solid-btn" id="next-btn">
+                Next
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path>
+                </svg>
+              </button>
+            </div>
+
+            <p class="kbd-hint">Tip: press <kbd>1</kbd>&ndash;<kbd>4</kbd> to answer, <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to move.</p>
+          </article>
+        </div>
+
+        <aside class="quiz-side" aria-labelledby="nav-title">
+          <div class="side-card">
+            <h3 id="nav-title">Question navigator</h3>
+            <div class="nav-grid" id="nav-grid"><!-- injected --></div>
+            <ul class="nav-legend">
+              <li><span class="key answered" aria-hidden="true"></span> Answered</li>
+              <li><span class="key current" aria-hidden="true"></span> Current</li>
+              <li><span class="key" aria-hidden="true"></span> Not answered</li>
+            </ul>
+            <div class="side-progress">
+              <span>Progress</span>
+              <strong id="side-percent">0%</strong>
+            </div>
+            <button type="button" class="solid-btn full" id="submit-btn">Submit test</button>
+            <button type="button" class="text-btn" id="quit-btn">Exit without submitting</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= Result screen ================= -->
+    <section class="screen" id="screen-result" aria-labelledby="result-title">
+      <div class="shell result-wrap">
+        <div class="result-header">
+          <span class="pill" id="result-verdict-pill"><span class="dot" aria-hidden="true"></span> Result</span>
+          <h1 id="result-title">Test complete</h1>
+          <p class="lede" id="result-summary">Here is how you did.</p>
+        </div>
+
+        <div class="result-grid">
+          <div class="score-card">
+            <div class="score-ring" id="score-ring">
+              <svg viewBox="0 0 200 200" width="200" height="200" aria-hidden="true">
+                <circle class="ring-bg" cx="100" cy="100" r="86" fill="none" stroke-width="16"></circle>
+                <circle class="ring-fg" id="ring-fg" cx="100" cy="100" r="86" fill="none" stroke-width="16"
+                        stroke-linecap="round" transform="rotate(-90 100 100)"></circle>
+              </svg>
+              <div class="score-center">
+                <strong id="score-percent">0%</strong>
+                <span id="score-fraction">0 / 40</span>
+              </div>
+            </div>
+            <p class="score-grade" id="score-grade">Keep practising</p>
+            <div class="score-meta">
+              <div><span>Time used</span><strong id="result-time">00:00</strong></div>
+              <div><span>Accuracy</span><strong id="result-accuracy">0%</strong></div>
+            </div>
+          </div>
+
+          <div class="result-details">
+            <div class="tiles">
+              <div class="tile tile-correct"><span>Correct</span><strong id="tile-correct">0</strong></div>
+              <div class="tile tile-wrong"><span>Wrong</span><strong id="tile-wrong">0</strong></div>
+              <div class="tile tile-skip"><span>Unanswered</span><strong id="tile-skip">0</strong></div>
+            </div>
+
+            <div class="breakdown-card">
+              <h3>Performance by category</h3>
+              <div class="breakdown" id="breakdown"><!-- injected --></div>
+            </div>
+
+            <div class="result-actions">
+              <button type="button" class="solid-btn" id="review-btn">Review all 40 answers</button>
+              <button type="button" class="outline-btn" id="retry-btn">New test</button>
+              <button type="button" class="text-btn" id="home-btn">Back to home</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Review screen ================= -->
+    <section class="screen" id="screen-review" aria-labelledby="review-title">
+      <div class="shell review-wrap">
+        <div class="review-head">
+          <div>
+            <h1 id="review-title">Answer review</h1>
+            <p class="lede" id="review-summary">Every question, your answer and the correct answer.</p>
+          </div>
+          <div class="review-actions">
+            <button type="button" class="outline-btn" id="review-back-btn">Back to results</button>
+            <button type="button" class="solid-btn" id="review-retry-btn">Take a new test</button>
+          </div>
+        </div>
+
+        <div class="review-filters" role="group" aria-label="Filter review">
+          <button type="button" class="chip is-active" data-filter="all">All</button>
+          <button type="button" class="chip" data-filter="wrong">Wrong only</button>
+          <button type="button" class="chip" data-filter="blank">Unanswered</button>
+          <button type="button" class="chip" data-filter="correct">Correct</button>
+        </div>
+
+        <div class="review-list" id="review-list"><!-- injected --></div>
+      </div>
+    </section>
+    <!-- ================= Question bank browse screen ================= -->
+    <section class="screen" id="screen-bank" aria-labelledby="bank-title">
+      <div class="shell review-wrap">
+        <div class="review-head">
+          <div>
+            <h1 id="bank-title">The full question bank</h1>
+            <p class="lede">All 100 questions with their four options and the correct answer marked.</p>
+          </div>
+          <div class="review-actions">
+            <button type="button" class="outline-btn" data-home>Back to home</button>
+            <button type="button" class="solid-btn" id="bank-start-btn">Start a test</button>
+          </div>
+        </div>
+
+        <div class="review-filters" id="bank-filters" role="group" aria-label="Filter question bank">
+          <button type="button" class="chip is-active" data-category="all">All 100</button>
+          <button type="button" class="chip" data-category="Science">Science</button>
+          <button type="button" class="chip" data-category="History">History</button>
+          <button type="button" class="chip" data-category="Geography">Geography</button>
+          <button type="button" class="chip" data-category="Technology">Technology</button>
+          <button type="button" class="chip" data-category="General Knowledge">General Knowledge</button>
+        </div>
+
+        <p class="muted" id="bank-count">100 questions</p>
+        <div class="review-list" id="bank-list"><!-- injected --></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <p><strong>QuizCraft</strong> &mdash; 100 questions &middot; 40 per test &middot; 4 options &middot; 1 correct answer.</p>
+      <p class="muted">Built with plain HTML, CSS and JavaScript. Your results are stored only in this browser.</p>
+    </div>
+  </footer>
+
+  <!-- ================= Confirm dialog ================= -->
+  <div class="modal-backdrop" id="modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-text">
+      <h2 id="modal-title">Submit test?</h2>
+      <p id="modal-text">You have unanswered questions.</p>
+      <div class="modal-actions">
+        <button type="button" class="outline-btn" id="modal-cancel">Keep going</button>
+        <button type="button" class="solid-btn" id="modal-confirm">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/questions.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
